@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Wordle Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f5f2 0%, #f0e8e0 50%, #e8d5cc 100%);
+            color: #7d6658;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Floating flowers animation */
+        .floating-flowers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-flower {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 20px;
+            animation: float 14s infinite linear;
+            user-select: none;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.3));
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(252, 250, 248, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(125, 102, 88, 0.3);
+            overflow: hidden;
+            padding: 40px;
+            position: relative;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(232, 213, 204, 0.5);
+        }
+        
+        .container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 60px rgba(125, 102, 88, 0.35);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, #c4a484, #b8956f, #d4b896);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7d6658;
+            margin-bottom: 25px;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        .decorative-elements {
+            font-size: 2.5rem;
+            margin: 20px 0;
+            letter-spacing: 12px;
+            color: #d4b896;
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .login-game {
+            background: rgba(248, 245, 242, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(196, 164, 132, 0.2);
+            text-align: center;
+        }
+        
+        .wordle-game {
+            background: rgba(248, 245, 242, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(196, 164, 132, 0.2);
+        }
+        
+        .instructions {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #7d6658;
+            font-weight: 500;
+        }
+        
+        .wordle-grid {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .grid-5 {
+            grid-template-columns: repeat(5, 1fr);
+        }
+        
+        .grid-7 {
+            grid-template-columns: repeat(7, 1fr);
+        }
+        
+        .letter-box {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #e8d5cc;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(145deg, #fcfaf8, #f0e8e0);
+            text-transform: uppercase;
+            color: #7d6658;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .letter-box.filled {
+            transform: scale(1.05);
+            border-color: #c4a484;
+            box-shadow: 0 3px 15px rgba(196, 164, 132, 0.3);
+        }
+        
+        .correct {
+            background: linear-gradient(145deg, #c4a484, #b8956f) !important;
+            color: white !important;
+            border-color: #c4a484 !important;
+            transform: scale(1.1);
+            animation: correctBounce 0.6s ease;
+        }
+        
+        .present {
+            background: linear-gradient(145deg, #d4b896, #e8c7a6) !important;
+            color: white !important;
+            border-color: #d4b896 !important;
+            transform: scale(1.05);
+            animation: presentShake 0.6s ease;
+        }
+        
+        .absent {
+            background: linear-gradient(145deg, #b8956f, #a68660) !important;
+            color: white !important;
+            border-color: #a68660 !important;
+            opacity: 0.7;
+            animation: absentSlide 0.6s ease;
+        }
+        
+        @keyframes correctBounce {
+            0%, 100% { transform: scale(1.1); }
+            50% { transform: scale(1.2) rotate(3deg); }
+        }
+        
+        @keyframes presentShake {
+            0%, 100% { transform: scale(1.05) translateX(0); }
+            25% { transform: scale(1.05) translateX(-3px); }
+            75% { transform: scale(1.05) translateX(3px); }
+        }
+        
+        @keyframes absentSlide {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        input {
+            flex: 1;
+            max-width: 250px;
+            padding: 16px 20px;
+            font-size: 1.2rem;
+            border: 3px solid #e8d5cc;
+            border-radius: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            background: linear-gradient(145deg, #fcfaf8, #f0e8e0);
+            color: #7d6658;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #c4a484;
+            box-shadow: 0 0 0 4px rgba(196, 164, 132, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        button {
+            padding: 16px 30px;
+            background: linear-gradient(145deg, #c4a484, #b8956f);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(196, 164, 132, 0.3);
+            font-weight: 600;
+            font-family: 'Georgia', serif;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(196, 164, 132, 0.4);
+            background: linear-gradient(145deg, #b8956f, #c4a484);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(196, 164, 132, 0.3);
+        }
+        
+        button:disabled {
+            background: #e8d5cc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .message {
+            text-align: center;
+            margin: 25px 0;
+            font-weight: 600;
+            min-height: 30px;
+            color: #7d6658;
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: rgba(248, 245, 242, 0.8);
+            border: 2px solid rgba(196, 164, 132, 0.2);
+        }
+        
+        .message.success {
+            background: linear-gradient(145deg, rgba(196, 164, 132, 0.1), rgba(184, 149, 111, 0.1));
+            color: #c4a484;
+            border-color: #c4a484;
+            animation: successPulse 1s ease;
+        }
+        
+        .message.error {
+            background: linear-gradient(145deg, rgba(184, 149, 111, 0.15), rgba(166, 134, 96, 0.1));
+            color: #b8956f;
+            border-color: #b8956f;
+            animation: errorShake 0.5s ease;
+        }
+        
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        
+        .attempts {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #7d6658;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(248, 245, 242, 0.9);
+            border-radius: 25px;
+            display: inline-block;
+            min-width: 180px;
+            border: 2px solid rgba(232, 213, 204, 0.5);
+        }
+        
+        .level-content {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(252, 250, 248, 0.95);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 184, 150, 0.3);
+        }
+        
+        .level-content.active {
+            display: block;
+            animation: levelReveal 1s ease;
+        }
+        
+        @keyframes levelReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .level-image {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin: 20px auto;
+            border: 4px solid #d4b896;
+            box-shadow: 0 10px 30px rgba(125, 102, 88, 0.3);
+        }
+        
+        .level-message {
+            background: linear-gradient(145deg, #fcfaf8, #f0e8e0);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #7d6658;
+            border: 2px solid rgba(196, 164, 132, 0.2);
+            font-style: italic;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(232, 213, 204, 0.5);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c4a484, #d4b896);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+        
+        .level-header {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .level-title {
+            font-size: 2rem;
+            color: #c4a484;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .level-subtitle {
+            font-size: 1.1rem;
+            color: #7d6658;
+            font-style: italic;
+        }
+        
+        .keyboard {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .keyboard-row {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .key {
+            width: 40px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #f0e8e0, #e8d5cc);
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            font-size: 14px;
+            color: #7d6658;
+            transition: all 0.2s ease;
+            border: 2px solid rgba(125, 102, 88, 0.1);
+            font-family: 'Georgia', serif;
+        }
+        
+        .key:hover {
+            background: linear-gradient(145deg, #e8d5cc, #d4c4a8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(125, 102, 88, 0.2);
+        }
+        
+        .key.used-correct {
+            background: linear-gradient(145deg, #c4a484, #b8956f);
+            color: white;
+        }
+        
+        .key.used-present {
+            background: linear-gradient(145deg, #d4b896, #e8c7a6);
+            color: white;
+        }
+        
+        .key.used-absent {
+            background: linear-gradient(145deg, #b8956f, #a68660);
+            color: white;
+            opacity: 0.7;
+        }
+        
+        .next-level-btn {
+            margin-top: 30px;
+            padding: 18px 35px;
+            font-size: 1.2rem;
+            background: linear-gradient(145deg, #d4b896, #e8c7a6);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(212, 184, 150, 0.3);
+        }
+        
+        .next-level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(212, 184, 150, 0.4);
+        }
+
+        /* Video section styles */
+        .video-section {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(252, 250, 248, 0.95);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 184, 150, 0.3);
+        }
+
+        .video-section.active {
+            display: block;
+            animation: levelReveal 1s ease;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(125, 102, 88, 0.3);
+        }
+
+        .wedding-video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-title {
+            font-size: 1.8rem;
+            color: #c4a484;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .video-message {
+            background: linear-gradient(145deg, #fcfaf8, #f0e8e0);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #7d6658;
+            border: 2px solid rgba(196, 164, 132, 0.2);
+            font-style: italic;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #c4a484;
+            font-size: 1rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 95%;
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .letter-box {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            
+            .input-area {
+                flex-direction: column;
+            }
+            
+            .key {
+                width: 35px;
+                height: 42px;
+                font-size: 12px;
+            }
+
+            input {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .letter-box {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .key {
+                width: 30px;
+                height: 38px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating flowers background -->
+    <div class="floating-flowers" id="floating-flowers"></div>
+    
+    <div class="container">
+        <!-- Login Page - Simple word guess without grid -->
+        <div class="page active" id="login-page">
+            <div class="header">
+                <h1>Wedding Login</h1>
+                <div class="decorative-elements">🌸 ♡ 🌸</div>
+                <p class="subtitle">Guess the magic word to enter our love story</p>
+            </div>
+            
+            <div class="login-game">
+                <p class="instructions">Guess the 7-letter word to unlock the wedding journey</p>
+                
+                <div class="input-area">
+                    <input type="text" id="login-input" maxlength="7" placeholder="ENTER WORD">
+                    <button id="login-btn">Submit</button>
+                </div>
+                
+                <p class="message" id="login-message">Think of something that binds two hearts...</p>
+                <p class="attempts" id="login-attempts">Attempts: 0/6</p>
+            </div>
+        </div>
+        
+        <!-- Game Levels Page - With Wordle grids -->
+        <div class="page" id="levels-page">
+            <div class="header">
+                <h1>Our Love Journey</h1>
+                <div class="decorative-elements">🌸 ♡ 🌸</div>
+                <p class="subtitle">Discover the milestones of our relationship</p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            
+            <!-- Level Header -->
+            <div class="level-header">
+                <h2 class="level-title" id="level-title">Level 1: First Meeting</h2>
+                <p class="level-subtitle" id="level-subtitle">Where did our story begin?</p>
+            </div>
+            
+            <div class="wordle-game">
+                <p class="instructions" id="level-instructions">Guess the 5-letter word</p>
+                
+                <div class="wordle-grid grid-5" id="level-grid">
+                    <!-- Grid will be generated by JavaScript -->
+                </div>
+                
+                <div class="input-area">
+                    <input type="text" id="level-input" maxlength="5" placeholder="ENTER WORD">
+                    <button id="level-btn">Submit</button>
+                </div>
+                
+                <p class="message" id="level-message">Hint: A place where people gather for drinks...</p>
+                <p class="attempts" id="level-attempts">Attempts: 0/6</p>
+                
+                <div class="keyboard" id="level-keyboard">
+                    <!-- Keyboard will be generated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="level-content" id="level-content">
+                <img id="level-image" class="level-image" src="" alt="Level Image">
+                <div class="level-message" id="level-story"></div>
+                <button class="next-level-btn" id="next-level-btn">Continue Journey</button>
+            </div>
+
+            <!-- Video Section -->
+            <div class="video-section" id="video-section">
+                <h3 class="video-title">Our Wedding Video</h3>
+                <div class="video-container">
+                    <!-- Your wedding video -->
+                    <video class="wedding-video" controls preload="metadata">
+                        <source src="assets/videos/Video1.mp4" type="video/mp4">
+                        <p>Your browser does not support the video tag.</p>
+                    </video>
+                </div>
+                <div class="video-message">
+                    <!-- EDIT HERE: Customize your video message -->
+                    <p>Thank you for joining us on this incredible journey! This video captures the most precious moments of our special day. We hope you enjoyed discovering our love story through this interactive experience.</p>
+                    <br>
+                    <p>From the bottom of our hearts, thank you for being part of our celebration of love.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Crafted with love for the perfect wedding</p>
+        </footer>
+    </div>
+
+    <script>
+        // EDIT THESE SECTIONS TO CUSTOMIZE YOUR GAME
+        
+        // Game Configuration
+        const LOGIN_WORD = "WEDDING"; // EDIT: Change the login word (7 letters)
+        
+        const LEVELS = [
+            // EDIT: Customize each level with your own story
+            {
+                word: "CAFEE", // EDIT: 5-letter word for this level
+                title: "Level 1: First Meeting", // EDIT: Level title
+                subtitle: "Where did our story begin?", // EDIT: Level subtitle
+                hint: "A place where people gather for drinks...", // EDIT: Hint text
+                image: "assets/images/Image1.jpg", // Your first meeting photo
+                story: "It was a rainy Tuesday afternoon when our eyes first met across the crowded cafe. You were reading a book, I was pretending to work on my laptop, but really I was stealing glances at you. When you smiled at me over your coffee cup, I knew my life had changed forever." // EDIT: Your story
+            },
+            {
+                word: "DANCE", // EDIT: 5-letter word
+                title: "Level 2: First Date", // EDIT: Title
+                subtitle: "Our first magical evening together", // EDIT: Subtitle
+                hint: "What we did all night on our first date...", // EDIT: Hint
+                image: "assets/images/Image2.jpg", // Your first date photo
+                story: "Our first date was supposed to be dinner and a movie, but we ended up dancing until 3 AM at that little jazz club downtown. You taught me how to swing dance, and I taught you that I have two left feet. But somehow, we moved perfectly together." // EDIT: Story
+            },
+            {
+                word: "PARIS", // EDIT: 5-letter word
+                title: "Level 3: First Trip", // EDIT: Title
+                subtitle: "The city where we fell deeper in love", // EDIT: Subtitle
+                hint: "The city of love where we vacationed...", // EDIT: Hint
+                image: "assets/images/Image3.jpg", // Your first trip photo
+                story: "Six months later, we took our first trip together to the most romantic city in the world. Under the Eiffel Tower at sunset, you told me you loved me for the first time. I had been waiting to say it back for weeks. That night, we walked along the Seine until dawn." // EDIT: Story
+            },
+            {
+                word: "HOUSE", // EDIT: 5-letter word
+                title: "Level 4: Moving In", // EDIT: Title
+                subtitle: "Building our home together", // EDIT: Subtitle
+                hint: "What we bought together to start our life...", // EDIT: Hint
+                image: "assets/images/Image4.jpg", // Your home photo
+                story: "After two years of dating, we decided to take the next big step. House hunting was an adventure - you wanted a big kitchen, I wanted a home office, but we both knew we'd found 'the one' when we walked into our little blue house with the white picket fence. It felt like home immediately." // EDIT: Story
+            },
+            {
+                word: "RINGS", // EDIT: 5-letter word
+                title: "Level 5: The Proposal", // EDIT: Title
+                subtitle: "The moment that changed everything", // EDIT: Subtitle
+                hint: "What I slipped onto your finger...", // EDIT: Hint
+                image: "assets/images/Image5.jpg", // Your proposal photo
+                story: "I planned it for months - the perfect sunset spot where we had our first picnic, your favorite flowers scattered around, and our song playing softly in the background. When I got down on one knee, you started crying before I even said the words. 'Will you marry me?' I asked. 'I thought you'd never ask!' you laughed through your tears." // EDIT: Story
+            }
+        ];
+
+        // Game State
+        let currentPage = 'login';
+        let currentLevel = 0;
+        let currentRow = 0;
+        let loginAttempts = 0;
+        let levelAttempts = 0;
+        let gameOver = false;
+        let levelGameOver = false;
+        const MAX_ATTEMPTS = 6;
+
+        // DOM Elements
+        const loginPage = document.getElementById('login-page');
+        const levelsPage = document.getElementById('levels-page');
+        const floatingFlowers = document.getElementById('floating-flowers');
+        
+        // Login elements
+        const loginInput = document.getElementById('login-input');
+        const loginBtn = document.getElementById('login-btn');
+        const loginMessage = document.getElementById('login-message');
+        const loginAttemptsEl = document.getElementById('login-attempts');
+        
+        // Level elements
+        const levelTitle = document.getElementById('level-title');
+        const levelSubtitle = document.getElementById('level-subtitle');
+        const levelInstructions = document.getElementById('level-instructions');
+        const levelGrid = document.getElementById('level-grid');
+        const levelInput = document.getElementById('level-input');
+        const levelBtn = document.getElementById('level-btn');
+        const levelMessage = document.getElementById('level-message');
+        const levelAttemptsEl = document.getElementById('level-attempts');
+        const levelKeyboard = document.getElementById('level-keyboard');
+        const levelContent = document.getElementById('level-content');
+        const levelImage = document.getElementById('level-image');
+        const levelStory = document.getElementById('level-story');
+        const nextLevelBtn = document.getElementById('next-level-btn');
+        const progressFill = document.getElementById('progress-fill');
+        const videoSection = document.getElementById('video-section');
+
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', () => {
+            initFloatingFlowers();
+            initLoginPage();
+        });
+
+        // Create floating flowers
+        function initFloatingFlowers() {
+            const flowerTypes = ['🌸', '🌺', '🌻', '🌷', '🌹', '🌼'];
+            
+            function createFlower() {
+                const flower = document.createElement('div');
+                flower.classList.add('floating-flower');
+                flower.innerHTML = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+                flower.style.left = Math.random() * 100 + '%';
+                flower.style.animationDuration = (Math.random() * 4 + 10) + 's';
+                flower.style.animationDelay = Math.random() * 2 + 's';
+                floatingFlowers.appendChild(flower);
+                
+                setTimeout(() => {
+                    if (flower.parentNode) {
+                        flower.parentNode.removeChild(flower);
+                    }
+                }, 17000);
+            }
+            
+            setInterval(createFlower, 3000);
+        }
+
+        // Initialize login page
+        function initLoginPage() {
+            loginBtn.addEventListener('click', handleLoginSubmit);
+            loginInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleLoginSubmit();
+                }
+            });
+            
+            loginInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.toUpperCase();
+            });
+        }
+
+        // Handle login submission
+        function handleLoginSubmit() {
+            if (gameOver) return;
+            
+            const guess = loginInput.value.trim().toUpperCase();
+            
+            if (guess.length !== 7) {
+                showLoginMessage('Please enter a 7-letter word!', 'error');
+                return;
+            }
+            
+            loginAttempts++;
+            updateLoginAttempts();
+            
+            if (guess === LOGIN_WORD) {
+                showLoginMessage('Welcome to our love story! 💕', 'success');
+                setTimeout(() => {
+                    switchToLevelsPage();
+                }, 2000);
+            } else {
+                if (loginAttempts >= MAX_ATTEMPTS) {
+                    showLoginMessage(`Game over! The word was "${LOGIN_WORD}"`, 'error');
+                    gameOver = true;
+                    loginBtn.disabled = true;
+                } else {
+                    showLoginMessage(`Try again! ${MAX_ATTEMPTS - loginAttempts} attempts left.`, 'error');
+                }
+            }
+            
+            loginInput.value = '';
+        }
+
+        // Show login message
+        function showLoginMessage(text, type = '') {
+            loginMessage.textContent = text;
+            loginMessage.className = `message ${type}`;
+        }
+
+        // Update login attempts
+        function updateLoginAttempts() {
+            loginAttemptsEl.textContent = `Attempts: ${loginAttempts}/${MAX_ATTEMPTS}`;
+        }
+
+        // Switch to levels page
+        function switchToLevelsPage() {
+            loginPage.classList.remove('active');
+            levelsPage.classList.add('active');
+            currentPage = 'levels';
+            initLevelsPage();
+        }
+
+        // Initialize levels page
+        function initLevelsPage() {
+            initCurrentLevel();
+            
+            levelBtn.addEventListener('click', handleLevelSubmit);
+            levelInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleLevelSubmit();
+                }
+            });
+            
+            levelInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            
+            nextLevelBtn.addEventListener('click', goToNextLevel);
+        }
+
+        // Initialize current level
+        function initCurrentLevel() {
+            if (currentLevel >= LEVELS.length) {
+                showVideoSection();
+                return;
+            }
+            
+            const level = LEVELS[currentLevel];
+            levelGameOver = false;
+            levelAttempts = 0;
+            currentRow = 0;
+            
+            // Update UI
+            levelTitle.textContent = level.title;
+            levelSubtitle.textContent = level.subtitle;
+            levelMessage.textContent = `Hint: ${level.hint}`;
+            levelMessage.className = 'message';
+            updateLevelAttempts();
+            updateProgress();
+            
+            // Reset input
+            levelInput.value = '';
+            levelInput.maxLength = level.word.length;
+            levelInput.placeholder = 'ENTER WORD';
+            levelBtn.disabled = false;
+            
+            // Hide level content
+            levelContent.classList.remove('active');
+            
+            // Create grid
+            createLevelGrid();
+            createKeyboard();
+        }
+
+        // Create level grid
+        function createLevelGrid() {
+            const level = LEVELS[currentLevel];
+            const wordLength = level.word.length;
+            
+            levelGrid.innerHTML = '';
+            levelGrid.className = `wordle-grid grid-${wordLength}`;
+            
+            // Create 6 rows for attempts
+            for (let row = 0; row < MAX_ATTEMPTS; row++) {
+                for (let col = 0; col < wordLength; col++) {
+                    const box = document.createElement('div');
+                    box.className = 'letter-box';
+                    box.id = `box-${row}-${col}`;
+                    levelGrid.appendChild(box);
+                }
+            }
+        }
+
+        // Create keyboard
+        function createKeyboard() {
+            const rows = [
+                ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+                ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+            ];
+            
+            levelKeyboard.innerHTML = '';
+            
+            rows.forEach(row => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'keyboard-row';
+                
+                row.forEach(letter => {
+                    const key = document.createElement('div');
+                    key.className = 'key';
+                    key.textContent = letter;
+                    key.id = `key-${letter}`;
+                    key.addEventListener('click', () => {
+                        if (!levelGameOver) {
+                            addLetterToInput(letter);
+                        }
+                    });
+                    rowEl.appendChild(key);
+                });
+                
+                levelKeyboard.appendChild(rowEl);
+            });
+        }
+
+        // Add letter to input field
+        function addLetterToInput(letter) {
+            const currentLength = LEVELS[currentLevel] ? LEVELS[currentLevel].word.length : 5;
+            if (levelInput.value.length < currentLength) {
+                levelInput.value += letter;
+            }
+        }
+
+        // Handle level submission
+        function handleLevelSubmit() {
+            if (levelGameOver) return;
+            
+            const level = LEVELS[currentLevel];
+            const guess = levelInput.value.trim().toUpperCase();
+            
+            if (guess.length !== level.word.length) {
+                showLevelMessage(`Please enter a ${level.word.length}-letter word!`, 'error');
+                return;
+            }
+            
+            // Update grid with guess
+            updateGridRow(guess, level.word, currentRow);
+            
+            levelAttempts++;
+            currentRow++;
+            updateLevelAttempts();
+            
+            if (guess === level.word) {
+                showLevelMessage('Correct! You unlocked this memory! 💕', 'success');
+                levelGameOver = true;
+                levelBtn.disabled = true;
+                setTimeout(() => {
+                    showLevelContent();
+                }, 1500);
+            } else {
+                if (levelAttempts >= MAX_ATTEMPTS) {
+                    showLevelMessage(`The word was "${level.word}". Let's continue the journey anyway! 💕`, 'error');
+                    levelGameOver = true;
+                    levelBtn.disabled = true;
+                    setTimeout(() => {
+                        showLevelContent();
+                    }, 2000);
+                } else {
+                    showLevelMessage(`Try again! ${MAX_ATTEMPTS - levelAttempts} attempts left.`, 'error');
+                }
+            }
+            
+            levelInput.value = '';
+        }
+
+        // Update grid row with guess
+        function updateGridRow(guess, target, row) {
+            const wordLength = target.length;
+            
+            // Create arrays to track letter usage
+            let targetLetters = target.split('');
+            let letterStates = new Array(wordLength).fill('absent');
+            
+            // First pass: mark correct letters
+            for (let i = 0; i < wordLength; i++) {
+                if (guess[i] === target[i]) {
+                    letterStates[i] = 'correct';
+                    targetLetters[i] = null; // Mark as used
+                }
+            }
+            
+            // Second pass: mark present letters
+            for (let i = 0; i < wordLength; i++) {
+                if (letterStates[i] !== 'correct') {
+                    const letterIndex = targetLetters.indexOf(guess[i]);
+                    if (letterIndex !== -1) {
+                        letterStates[i] = 'present';
+                        targetLetters[letterIndex] = null; // Mark as used
+                    }
+                }
+            }
+            
+            // Update boxes and keyboard
+            for (let i = 0; i < wordLength; i++) {
+                const box = document.getElementById(`box-${row}-${i}`);
+                const key = document.getElementById(`key-${guess[i]}`);
+                
+                box.textContent = guess[i];
+                box.classList.add('filled');
+                
+                setTimeout(() => {
+                    box.classList.add(letterStates[i]);
+                    
+                    // Update keyboard key color (only if it's a better state)
+                    if (key) {
+                        if (letterStates[i] === 'correct') {
+                            key.className = 'key used-correct';
+                        } else if (letterStates[i] === 'present' && !key.classList.contains('used-correct')) {
+                            key.className = 'key used-present';
+                        } else if (letterStates[i] === 'absent' && !key.classList.contains('used-correct') && !key.classList.contains('used-present')) {
+                            key.className = 'key used-absent';
+                        }
+                    }
+                }, i * 100);
+            }
+        }
+
+        // Show level message
+        function showLevelMessage(text, type = '') {
+            levelMessage.textContent = text;
+            levelMessage.className = `message ${type}`;
+        }
+
+        // Update level attempts
+        function updateLevelAttempts() {
+            levelAttemptsEl.textContent = `Attempts: ${levelAttempts}/${MAX_ATTEMPTS}`;
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentLevel / LEVELS.length) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        // Show level content (story and image)
+        function showLevelContent() {
+            const level = LEVELS[currentLevel];
+            
+            levelImage.src = level.image;
+            levelImage.alt = level.title;
+            levelStory.textContent = level.story;
+            
+            levelContent.classList.add('active');
+        }
+
+        // Go to next level
+        function goToNextLevel() {
+            currentLevel++;
+            
+            if (currentLevel >= LEVELS.length) {
+                showVideoSection();
+            } else {
+                initCurrentLevel();
+            }
+        }
+
+        // Show video section
+        function showVideoSection() {
+            // Hide level content and game
+            levelContent.classList.remove('active');
+            document.querySelector('.wordle-game').style.display = 'none';
+            document.querySelector('.level-header').style.display = 'none';
+            
+            // Update progress to 100%
+            progressFill.style.width = '100%';
+            
+            // Show video section
+            videoSection.classList.add('active');
+        }
+
+        // Fixed keyboard support for the entire page
+        document.addEventListener('keydown', (e) => {
+            // Prevent default behavior for control keys
+            if (e.ctrlKey || e.altKey || e.metaKey) {
+                return;
+            }
+            
+            if (currentPage === 'login' && !gameOver) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleLoginSubmit();
+                } else if (e.key === 'Backspace') {
+                    e.preventDefault();
+                    loginInput.value = loginInput.value.slice(0, -1);
+                } else if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
+                    e.preventDefault();
+                    if (loginInput.value.length < 7) {
+                        loginInput.value += e.key.toUpperCase();
+                    }
+                }
+            } else if (currentPage === 'levels' && !levelGameOver) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleLevelSubmit();
+                } else if (e.key === 'Backspace') {
+                    e.preventDefault();
+                    levelInput.value = levelInput.value.slice(0, -1);
+                } else if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
+                    e.preventDefault();
+                    const currentLength = LEVELS[currentLevel] ? LEVELS[currentLevel].word.length : 5;
+                    if (levelInput.value.length < currentLength) {
+                        levelInput.value += e.key.toUpperCase();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
