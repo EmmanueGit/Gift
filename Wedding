@@ -623,20 +623,21 @@
         <!-- Login Page - Simple word guess without grid -->
         <div class="page active" id="login-page">
             <div class="header">
-                <h1>Wedding Login</h1>
+                <h1>Wordle Ever After: Jas & Josh Edition</h1>
                 <div class="decorative-elements">🌸 ♡ 🌸</div>
-                <p class="subtitle">Guess the magic word to enter our love story</p>
+                <p class="subtitle"></p>
             </div>
             
             <div class="login-game">
-                <p class="instructions">Guess the 7-letter word to unlock the wedding journey</p>
+                <p class="instructions">Guess the 7-letter word to unlock the journey</p>
+                
                 
                 <div class="input-area">
                     <input type="text" id="login-input" maxlength="7" placeholder="ENTER WORD">
                     <button id="login-btn">Submit</button>
                 </div>
                 
-                <p class="message" id="login-message">Think of something that binds two hearts...</p>
+                <p class="message" id="login-message">Big day with vows and rings...</p>
                 <p class="attempts" id="login-attempts">Attempts: 0/6</p>
             </div>
         </div>
@@ -644,7 +645,7 @@
         <!-- Game Levels Page - With Wordle grids -->
         <div class="page" id="levels-page">
             <div class="header">
-                <h1>Our Love Journey</h1>
+                <h1>Your Love Journey</h1>
                 <div class="decorative-elements">🌸 ♡ 🌸</div>
                 <p class="subtitle">Discover the milestones of our relationship</p>
             </div>
@@ -705,7 +706,7 @@
         </div>
         
         <footer>
-            <p>Crafted with love for the perfect wedding</p>
+            <p>Crafted by the Master Emman</p>
         </footer>
     </div>
 
@@ -718,44 +719,44 @@
         const LEVELS = [
             // EDIT: Customize each level with your own story
             {
-                word: "CAFEE", // EDIT: 5-letter word for this level
-                title: "Level 1: First Meeting", // EDIT: Level title
-                subtitle: "Where did our story begin?", // EDIT: Level subtitle
-                hint: "A place where people gather for drinks...", // EDIT: Hint text
-                image: "assets/images/Image1.jpg", // Your first meeting photo
-                story: "It was a rainy Tuesday afternoon when our eyes first met across the crowded cafe. You were reading a book, I was pretending to work on my laptop, but really I was stealing glances at you. When you smiled at me over your coffee cup, I knew my life had changed forever." // EDIT: Your story
+                word: "BEACH", // 5-letter word for holding hands at the beach
+                title: "Level 1: Seaside Romance", // EDIT: Level title
+                subtitle: "Where your love flows like the ocean waves", // EDIT: Level subtitle
+                hint: "Where sand meets sea and you held hands...", // EDIT: Hint text
+                image: "assets/images/Image1.jpg", // Them holding hands at the beach
+                story: "The golden sand beneath your feet, the endless horizon stretching before you, and your fingers intertwined - this moment captured the pure joy of finding your forever person. As the waves whispered their eternal song, your hearts beat in perfect rhythm, knowing this was just the beginning of your beautiful journey together." // EDIT: Your story
             },
             {
-                word: "DANCE", // EDIT: 5-letter word
-                title: "Level 2: First Date", // EDIT: Title
-                subtitle: "Our first magical evening together", // EDIT: Subtitle
-                hint: "What we did all night on our first date...", // EDIT: Hint
-                image: "assets/images/Image2.jpg", // Your first date photo
-                story: "Our first date was supposed to be dinner and a movie, but we ended up dancing until 3 AM at that little jazz club downtown. You taught me how to swing dance, and I taught you that I have two left feet. But somehow, we moved perfectly together." // EDIT: Story
+                word: "QUEEN", // 5-letter word for Statue of Liberty (Lady Liberty/Queen of NY)
+                title: "Level 2: New York Adventure", // EDIT: Title
+                subtitle: "Standing tall together in the city of dreams", // EDIT: Subtitle
+                hint: "What Lady Liberty represents, and what you are to each other...", // EDIT: Hint
+                image: "assets/images/Image2.jpg", // Their selfie at Statue of Liberty
+                story: "In the shadow of Lady Liberty, you captured more than just a selfie - you captured a moment of pure adventure and freedom. Standing together in New York, the city that never sleeps, you both knew that no matter where life takes you, you'll always be each other's greatest adventure and home." // EDIT: Story
             },
             {
-                word: "PARIS", // EDIT: 5-letter word
-                title: "Level 3: First Trip", // EDIT: Title
-                subtitle: "The city where we fell deeper in love", // EDIT: Subtitle
-                hint: "The city of love where we vacationed...", // EDIT: Hint
-                image: "assets/images/Image3.jpg", // Your first trip photo
-                story: "Six months later, we took our first trip together to the most romantic city in the world. Under the Eiffel Tower at sunset, you told me you loved me for the first time. I had been waiting to say it back for weeks. That night, we walked along the Seine until dawn." // EDIT: Story
+                word: "KAYAK", // 5-letter word for their kayaking adventure
+                title: "Level 3: Paddling Together", // EDIT: Title
+                subtitle: "Navigating life's waters side by side", // EDIT: Subtitle
+                hint: "The small boat that carried you on your water adventure...", // EDIT: Hint
+                image: "assets/images/Image3.jpg", // Them in the kayak
+                story: "Gliding across the calm waters, paddles moving in sync, you discovered that teamwork makes everything better - even when you're both still figuring out which way to steer! This adventure taught you that with the right person beside you, even the choppiest waters become an exciting journey worth taking together." // EDIT: Story
             },
             {
-                word: "HOUSE", // EDIT: 5-letter word
-                title: "Level 4: Moving In", // EDIT: Title
-                subtitle: "Building our home together", // EDIT: Subtitle
-                hint: "What we bought together to start our life...", // EDIT: Hint
-                image: "assets/images/Image4.jpg", // Your home photo
-                story: "After two years of dating, we decided to take the next big step. House hunting was an adventure - you wanted a big kitchen, I wanted a home office, but we both knew we'd found 'the one' when we walked into our little blue house with the white picket fence. It felt like home immediately." // EDIT: Story
+                word: "SWIFT", // 5-letter word for Taylor Swift concert
+                title: "Level 4: Concert Magic", // EDIT: Title
+                subtitle: "Dancing to the soundtrack of your love", // EDIT: Subtitle
+                hint: "The last name of the pop star whose concert you attended...", // EDIT: Hint
+                image: "assets/images/Image4.jpg", // Their photo at Taylor Swift concert
+                story: "Under the bright stage lights, surrounded by thousands of voices singing in unison, you found yourselves in your own little world. Dancing and singing along to every song, you realized that your love story was just as magical as any love song - and this night would become one of your favorite chapters." // EDIT: Story
             },
             {
-                word: "RINGS", // EDIT: 5-letter word
-                title: "Level 5: The Proposal", // EDIT: Title
-                subtitle: "The moment that changed everything", // EDIT: Subtitle
-                hint: "What I slipped onto your finger...", // EDIT: Hint
-                image: "assets/images/Image5.jpg", // Your proposal photo
-                story: "I planned it for months - the perfect sunset spot where we had our first picnic, your favorite flowers scattered around, and our song playing softly in the background. When I got down on one knee, you started crying before I even said the words. 'Will you marry me?' I asked. 'I thought you'd never ask!' you laughed through your tears." // EDIT: Story
+                word: "WHEEL", // 5-letter word for ferris wheel
+                title: "Level 5: Sky High Love", // EDIT: Title
+                subtitle: "Rising above the world together", // EDIT: Subtitle
+                hint: "The giant circular ride that lifted you high into the night sky...", // EDIT: Hint
+                image: "assets/images/Image5.jpg", // Them looking at ferris wheel at night
+                story: "As the ferris wheel painted colorful patterns against the starlit sky, you stood there in peaceful silence, backs to the world, looking forward to your future together. In that quiet moment, with the city lights twinkling below, you both knew that your love had lifted you higher than any ride ever could." // EDIT: Story
             }
         ];
 
