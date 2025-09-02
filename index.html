@@ -819,7 +819,7 @@
             <div class="header">
                 <h1>Login</h1>
                 <div class="decorative-elements">🌸 ♡ 🌸</div>
-                <p class="subtitle">Guess the magic word to enter our love story</p>
+                <p class="subtitle">Guess the magic word to enter your love story</p>
             </div>
             
             <div class="login-game">
@@ -846,7 +846,7 @@
             <div class="header">
                 <h1>Your Love Journey</h1>
                 <div class="decorative-elements">🌸 ♡ 🌸</div>
-                <p class="subtitle">Discover the milestones of our relationship</p>
+                <p class="subtitle">Discover the milestones of your relationship</p>
             </div>
             
             <div class="progress-bar">
@@ -889,7 +889,7 @@
 
             <!-- Video Section -->
             <div class="video-section" id="video-section">
-                <h3 class="video-title">Our Wedding Video</h3>
+                <h3 class="video-title">Your Wedding Video</h3>
                 <div class="video-container">
                     <!-- Your wedding video -->
                     <video class="wedding-video" controls preload="metadata">
@@ -898,10 +898,7 @@
                     </video>
                 </div>
                 <div class="video-message">
-                    <!-- EDIT HERE: Customize your video message -->
-                    <p>Thank you for joining us on this incredible journey! This video captures the most precious moments of our special day. We hope you enjoyed discovering our love story through this interactive experience.</p>
-                    <br>
-                    <p>From the bottom of our hearts, thank you for being part of our celebration of love.</p>
+                    <p>Thank you for being here and celebrating with them. This video is a look back at the little moments you've shared and the new ones still to come. We're happy to share it with all of you.</p>
                 </div>
             </div>
         </div>
@@ -923,9 +920,9 @@
                 word: "BEACH", // 5-letter word for holding hands at the beach
                 title: "Level 1: Seaside Romance", // EDIT: Level title
                 subtitle: "Where your love flows like the ocean waves", // EDIT: Level subtitle
-                hint: "Where sand meets sea and you held hands...", // EDIT: Hint text
+                hint: "Where sand meets sea and they held hands...", // EDIT: Hint text
                 image: "assets/images/Image1.jpg", // Them holding hands at the beach
-                story: "The golden sand beneath your feet, the endless horizon stretching before you, and your fingers intertwined - this moment captured the pure joy of finding your forever person. As the waves whispered their eternal song, your hearts beat in perfect rhythm, knowing this was just the beginning of your beautiful journey together." // EDIT: Your story
+                story: "By the beach, just the two of them enjoying the day. No plans needed, just good company and a lot of laughs." // EDIT: Your story
             },
             {
                 word: "QUEEN", // 5-letter word for Statue of Liberty (Lady Liberty/Queen of NY)
@@ -933,7 +930,7 @@
                 subtitle: "Standing tall together in the city of dreams", // EDIT: Subtitle
                 hint: "What Lady Liberty represents, and what you are to each other...", // EDIT: Hint
                 image: "assets/images/Image2.jpg", // Their selfie at Statue of Liberty
-                story: "In the shadow of Lady Liberty, you captured more than just a selfie - you captured a moment of pure adventure and freedom. Standing together in New York, the city that never sleeps, you both knew that no matter where life takes you, you'll always be each other's greatest adventure and home." // EDIT: Story
+                story: "A trip to the city, making memories in the middle of all the busy streets. Everywhere feels better when you're together." // EDIT: Story
             },
             {
                 word: "KAYAK", // 5-letter word for their kayaking adventure
@@ -941,7 +938,7 @@
                 subtitle: "Navigating life's waters side by side", // EDIT: Subtitle
                 hint: "The small boat that carried you on your water adventure...", // EDIT: Hint
                 image: "assets/images/Image3.jpg", // Them in the kayak
-                story: "Gliding across the calm waters, paddles moving in sync, you discovered that teamwork makes everything better - even when you're both still figuring out which way to steer! This adventure taught you that with the right person beside you, even the choppiest waters become an exciting journey worth taking together." // EDIT: Story
+                story: "Out on the water, figuring things out as a team. A simple day that showed how well you work side by side." // EDIT: Story
             },
             {
                 word: "SWIFT", // 5-letter word for Taylor Swift concert
@@ -949,7 +946,7 @@
                 subtitle: "Dancing to the soundtrack of your love", // EDIT: Subtitle
                 hint: "The last name of the pop star whose concert you attended...", // EDIT: Hint
                 image: "assets/images/Image4.jpg", // Their photo at Taylor Swift concert
-                story: "Under the bright stage lights, surrounded by thousands of voices singing in unison, you found yourselves in your own little world. Dancing and singing along to every song, you realized that your love story was just as magical as any love song - and this night would become one of your favorite chapters." // EDIT: Story
+                story: "A fun night with music and dancing. Nothing fancy, just enjoying the moment and having the best time together." // EDIT: Story
             },
             {
                 word: "WHEEL", // 5-letter word for ferris wheel
@@ -957,7 +954,7 @@
                 subtitle: "Rising above the world together", // EDIT: Subtitle
                 hint: "The giant circular ride that lifted you high into the night sky...", // EDIT: Hint
                 image: "assets/images/Image5.jpg", // Them looking at ferris wheel at night
-                story: "As the ferris wheel painted colorful patterns against the starlit sky, you stood there in peaceful silence, backs to the world, looking forward to your future together. In that quiet moment, with the city lights twinkling below, you both knew that your love had lifted you higher than any ride ever could." // EDIT: Story
+                story: "Up above the lights, everything felt calm. Just a quiet moment that said a lot without needing any words." // EDIT: Story
             }
         ];
 
@@ -1119,7 +1116,7 @@
             updateLoginAttempts();
             
             if (currentGuess === LOGIN_WORD) {
-                showLoginMessage('Welcome to our love story! 💕', 'success');
+                showLoginMessage('Welcome to your love story! 💕', 'success');
                 setTimeout(() => {
                     switchToLevelsPage();
                 }, 2000);
