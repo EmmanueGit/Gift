@@ -197,27 +197,28 @@
             box-shadow: 0 3px 15px rgba(196, 164, 132, 0.3);
         }
         
+        /* Brown theme for Wordle boxes */
         .correct {
-            background: linear-gradient(145deg, #c4a484, #b8956f) !important;
+            background: linear-gradient(145deg, #8b4513, #6b3410) !important;
             color: white !important;
-            border-color: #c4a484 !important;
+            border-color: #8b4513 !important;
             transform: scale(1.1);
             animation: correctBounce 0.6s ease;
         }
         
         .present {
-            background: linear-gradient(145deg, #d4b896, #e8c7a6) !important;
+            background: linear-gradient(145deg, #cd853f, #b8956f) !important;
             color: white !important;
-            border-color: #d4b896 !important;
+            border-color: #cd853f !important;
             transform: scale(1.05);
             animation: presentShake 0.6s ease;
         }
         
         .absent {
-            background: linear-gradient(145deg, #b8956f, #a68660) !important;
+            background: linear-gradient(145deg, #deb887, #c4a484) !important;
             color: white !important;
-            border-color: #a68660 !important;
-            opacity: 0.7;
+            border-color: #deb887 !important;
+            opacity: 0.8;
             animation: absentSlide 0.6s ease;
         }
         
@@ -491,6 +492,7 @@
             box-shadow: 0 4px 12px rgba(125, 102, 88, 0.2);
         }
         
+        /* Keep original keyboard colors */
         .key.used-correct {
             background: #4CAF50;
             color: white;
@@ -539,6 +541,45 @@
         .next-level-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(212, 184, 150, 0.4);
+        }
+
+        /* Legend styles */
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0 15px 0;
+            padding: 12px 20px;
+            background: rgba(248, 245, 242, 0.8);
+            border-radius: 15px;
+            border: 2px solid rgba(196, 164, 132, 0.2);
+            font-size: 0.9rem;
+            color: #7d6658;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .legend-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .legend-correct {
+            background: #4CAF50;
+        }
+        
+        .legend-present {
+            background: #FF9800;
+        }
+        
+        .legend-absent {
+            background: #757575;
         }
 
         /* Video section styles */
@@ -657,6 +698,22 @@
                 gap: 4px;
             }
             
+            .legend {
+                gap: 10px;
+                padding: 10px 15px;
+                font-size: 0.8rem;
+                margin: 15px 0 10px 0;
+            }
+            
+            .legend-item {
+                gap: 4px;
+            }
+            
+            .legend-circle {
+                width: 10px;
+                height: 10px;
+            }
+            
             .instructions {
                 font-size: 1rem;
                 margin-bottom: 20px;
@@ -767,6 +824,18 @@
                 gap: 3px;
             }
             
+            .legend {
+                gap: 8px;
+                padding: 8px 12px;
+                font-size: 0.75rem;
+                flex-wrap: wrap;
+            }
+            
+            .legend-circle {
+                width: 8px;
+                height: 8px;
+            }
+            
             .instructions {
                 font-size: 0.9rem;
             }
@@ -826,7 +895,7 @@
             </div>
             
             <div class="login-game">
-                <p class="instructions">Guess the 7-letter word to unlock your journey</p>
+                <p class="instructions">Guess the 8-letter word to unlock your journey</p>
                 
                 <div class="input-area">
                     <div class="current-guess" id="login-current-guess">
@@ -864,6 +933,22 @@
             
             <div class="wordle-game">
                 <p class="instructions" id="level-instructions">Guess the 5-letter word</p>
+                
+                <!-- Legend for keyboard colors -->
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-circle legend-correct"></div>
+                        <span>Right spot</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle legend-present"></div>
+                        <span>Wrong spot</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle legend-absent"></div>
+                        <span>Not in word</span>
+                    </div>
+                </div>
                 
                 <div class="wordle-grid grid-5" id="level-grid">
                     <!-- Grid will be generated by JavaScript -->
@@ -915,7 +1000,7 @@
         // EDIT THESE SECTIONS TO CUSTOMIZE YOUR GAME
         
         // Game Configuration
-        const LOGIN_WORD = "WEDDING"; // EDIT: Change the login word (7 letters)
+        const LOGIN_WORD = "MARRIAGE"; // EDIT: Changed the login word (8 letters)
         
         const LEVELS = [
             // EDIT: Customize each level with your own story
@@ -929,8 +1014,8 @@
             },
             {
                 word: "QUEEN", // 5-letter word for Statue of Liberty (Lady Liberty/Queen of NY)
-                title: "Level 2: New York Adventure", // EDIT: Title
-                subtitle: "Standing tall together in the city of dreams", // EDIT: Subtitle
+                title: "Level 2:City vibes Adventure", // EDIT: Title
+                subtitle: "Standing tall together in the city", // EDIT: Subtitle
                 hint: "A powerful figure, often seen beside a king.", // EDIT: Hint
                 image: "assets/images/Image2.jpg", // Their selfie at Statue of Liberty
                 story: "A trip to the city, making memories in the middle of all the busy streets. Everywhere feels better when you're together." // EDIT: Story
@@ -1040,7 +1125,7 @@
             const container = document.getElementById('login-current-guess');
             container.innerHTML = '';
             
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 8; i++) {
                 const box = document.createElement('div');
                 box.className = 'guess-box';
                 box.id = `login-guess-${i}`;
@@ -1086,7 +1171,7 @@
                     currentGuess = currentGuess.slice(0, -1);
                     updateLoginDisplay();
                 }
-            } else if (key.length === 1 && currentGuess.length < 7) {
+            } else if (key.length === 1 && currentGuess.length < 8) {
                 currentGuess += key;
                 updateLoginDisplay();
             }
@@ -1094,7 +1179,7 @@
 
         // Update login display
         function updateLoginDisplay() {
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 8; i++) {
                 const box = document.getElementById(`login-guess-${i}`);
                 if (i < currentGuess.length) {
                     box.textContent = currentGuess[i];
@@ -1110,8 +1195,8 @@
         function handleLoginSubmit() {
             if (gameOver) return;
             
-            if (currentGuess.length !== 7) {
-                showLoginMessage('Please enter a 7-letter word!', 'error');
+            if (currentGuess.length !== 8) {
+                showLoginMessage('Please enter an 8-letter word!', 'error');
                 return;
             }
             
@@ -1458,7 +1543,7 @@
                     }
                 } else if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
                     e.preventDefault();
-                    if (currentGuess.length < 7) {
+                    if (currentGuess.length < 8) {
                         currentGuess += e.key.toUpperCase();
                         updateLoginDisplay();
                     }
